@@ -1,18 +1,21 @@
 import {db} from '@/db';
 import Link from 'next/link';
 
-export default async function Home() {
-const snippets = await db.snippet.findMany();
+//server page
 
-const renderedSnippets =  snippets.map((snippet) => {
-  return(
-    <Link key={snippet.id} href={`/snippets/${snippet.id}`} className='flex items-center justify-between p-2 border rounded'>
-      <div> {snippet.title}</div>
-      <div>View</div>
-     
-    </Link>
-  )
-})
+export default async function Home() {
+
+  // aduce toate inregistrarile din baza de date
+  const snippets = await db.snippet.findMany();
+
+  const renderedSnippets =  snippets.map((snippet) => {
+    return(
+      <Link key={snippet.id} href={`/snippets/${snippet.id}`} className='flex items-center justify-between p-2 border rounded'>
+        <div> {snippet.title}</div>
+        <div>View</div>
+      </Link>
+    )
+  })
 
   return (
     <div className="min-h-screen p-24">

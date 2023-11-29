@@ -1,6 +1,7 @@
 'use server';
 import { db } from '@/db';
 import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
 
 //functia asta importata si apelata
 //in componenta client SnippetEditForm.tsx
@@ -14,6 +15,7 @@ export async function editSnippet(id: number, code: string) {
     data: { code },
   });
 
+  revalidatePath(`/snippets/${id}`)
   redirect(`/snippets/${id}`);
 }
 
@@ -22,6 +24,7 @@ export async function deleteSnippet(id: number) {
     where: { id },
   });
 
+  revalidatePath('/')
   redirect('/');
 }
 
@@ -70,6 +73,8 @@ export async function createSnippet(
     throw new Error("We can't record!");
   }
 
+  // For cashing 
+  revalidatePath('/')
   // Redirect the user back to the root route
   redirect('/');
 }
